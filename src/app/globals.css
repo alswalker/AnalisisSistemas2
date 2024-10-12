@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --text-color-dark: #ffffff; /* Texto blanco para fondos oscuros */
+  --text-color-light: #000000; /* Texto negro para fondos claros */
+  --background-color: #ffffff; /* Fondo blanco */
+}
+
+/* Aplicar fondo y color de texto global */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color-light);
+}
+
+/* Si necesitas texto blanco en secciones específicas */
+.text-white-on-dark {
+  color: var(--text-color-dark);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.break-words {
+  word-break: break-word;
+}
+
+/* Sección que tiene fondo oscuro */
+.bg-dark {
+  background-color: #1f2937; /* Fondo oscuro */
+  color: var(--text-color-dark); /* Texto blanco */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance; /* Revisa compatibilidad con navegadores */
+  }
+}
+
+/* Estilos globales para el formulario */
+.input_field {
+  height: 40px;
+  padding: 0 0 0 16px;
+  border-radius: 9px;
+  background-color: #F2F2F2;
+  border: 1px solid #D1D5DB; /* Color de borde gris claro */
+  /* transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1); */
+}
+
+.input_field:focus {
+  border: 1px solid #003865; /* Color del borde en foco */
+  box-shadow: 0px 0px 0px 2px #003865; /* Sombra en foco */
+  background-color: #FFFFFF; /* Fondo blanco en foco */
+}
+
+/* Estilo específico para los select */
+select.input_field {
+  height: 40px;
+  padding: 0 0 0 16px;
+  border-radius: 9px;
+  background-color: #F2F2F2;
+  border: 1px solid #D1D5DB; /* Color de borde gris claro */
+  color: #8B8E98; /* Color del texto */
+  font-size: 14px; /* Asegura que el tamaño de fuente sea el adecuado */
+  line-height: 1.5; /* Ajusta la altura de línea para una mejor legibilidad */
+}
+
+/* Añadir un ícono de flecha al final del select */
+select.input_field::after {
+  content: '▼'; /* Puedes ajustar el ícono según sea necesario */
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #8B8E98; /* Color del ícono */
+}
+
+/* Estilo para los textarea */
+textarea.input_field {
+  resize: vertical; /* Permitir solo redimensionar verticalmente */
+}
+
+/* Botones */
+.purchase--btn {
+  height: 55px;
+  background: linear-gradient(180deg, #363636 0%, #1B1B1B 50%, #000000 100%);
+  border-radius: 11px;
+  border: 0;
+  outline: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  /* transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1); */
+}
+
+.purchase--btn:hover {
+  box-shadow: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0000003a;
+}
+
+.sugerencias-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute; 
+  background-color: white; 
+}
+
+.sugerencia-item {
+  padding: 8px;
+  cursor: pointer; 
+}
+
+.sugerencia-item:hover {
+  background-color: #f0f0f0; 
+}
+
+.suggestions {
+  position: absolute; /* Posiciona las sugerencias absolutamente */
+  left: 20px; /* Desplazamiento a la derecha */
+  top: calc(100% + 5px); /* Coloca justo debajo del input con un pequeño margen */
+  width: calc(100% - 40px); /* Ancho igual al input, menos el margen */
+  z-index: 100; /* Para que las sugerencias aparezcan sobre otros elementos */
+  background-color: rgba(180, 255, 159, 0.8); /* Fondo de las sugerencias */
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+}
+
+.suggestion {
+  padding: 10px; /* Espaciado interno de las sugerencias */
+  cursor: pointer; /* Cambia el cursor al pasar sobre las sugerencias */
+}
+
+.suggestion:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Cambio de color al pasar el mouse */
+}
