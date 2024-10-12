@@ -11,7 +11,7 @@ import {
     PlusIcon
   } from '@heroicons/react/24/solid';
 
-function agregaEspecialidad() {
+function AgregaEspecialidad() {
     const [modal, setModal] = useState(false);
     const [labelText, setLabelText] = useState('Asignar especialidad a técnico');
     const [especialidad, setEspecialidad] = useState('');
@@ -198,4 +198,4 @@ function agregaEspecialidad() {
     );
 }
 
-export default agregaEspecialidad;
+export default AgregaEspecialidad;

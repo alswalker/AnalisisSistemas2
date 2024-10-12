@@ -14,7 +14,7 @@ import {
     PlusIcon
   } from '@heroicons/react/24/solid';
 
-function crudPrioridad() {
+function CrudPrioridad() {
     const [modal, setModal] = useState(false);
     const [labelText, setLabelText] = useState('Nueva Prioridad');
     const [prioridad, setPrioridad] = useState('');
@@ -146,4 +146,4 @@ function crudPrioridad() {
     );
 }
 
-export default crudPrioridad;
+export default CrudPrioridad;

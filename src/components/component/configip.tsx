@@ -1,5 +1,5 @@
 // configip.tsx
-const APIS_URL = 'http://localhost:81/';
+const APIS_URL = 'https://helpersapi-ckdybbdhhfaqcjd6.eastus-01.azurewebsites.net/';
 const SERVICES_URL = 'http://localhost/BWebServices/';
 
 export const getIpApis = () => {

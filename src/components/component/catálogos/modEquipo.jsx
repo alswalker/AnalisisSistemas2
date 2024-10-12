@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import logo from "@/app/icons/helpdesk.png";
 
-function crudEquipo() {
+function CrudEquipo() {
     const [modal, setModal] = useState(false);
     const [labelText, setLabelText] = useState('Nuevo Equipo');
     const [proveedorId, setProveedorId] = useState('');
@@ -223,4 +223,4 @@ function crudEquipo() {
     );
 }
 
-export default crudEquipo;
+export default CrudEquipo;

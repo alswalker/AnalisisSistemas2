@@ -11,7 +11,7 @@ import {
 import Image from "next/image";
 import logo from "@/app/icons/helpdesk.png";
 
-function crudProveedor() {
+function CrudProveedor() {
     const [modal, setModal] = useState(false);
     const [labelText, setLabelText] = useState('Nuevo Proveedor');
     const [nombrecomercial, setNombreComercial] = useState('');
@@ -282,4 +282,4 @@ function crudProveedor() {
     );
 }
 
-export default crudProveedor;
+export default CrudProveedor;
