@@ -31,7 +31,7 @@ interface User {
   Username: string;
 }
 
-const fetchTicketData = async (endpoint, username, setData) => {
+const fetchTicketData = async (endpoint: string, username: string, setData: (data: any) => void) => {
   try {
     const response = await fetch(`${getIpApis()}${endpoint}?idUsuario=${username}`, {
       headers: {
@@ -57,7 +57,15 @@ export function Navbar({ isCollapsed, toggleNavbar }: NavbarProps) {
   const [inProgressTickets, setInProgressTickets] = useState([{ total: 0 }]);
   const [ticketNumber, setTicketNumber] = useState(''); // Nueva barra de búsqueda
   const navigate = useNavigate(); // Redireccionar a otra página
+  const usuario = sessionStorage.getItem('user');
 
+  // Verifica si existe el valor y luego parsea el JSON para obtener el Username
+  let username = '';
+  
+  if (usuario) {
+    const usuarioObj = JSON.parse(usuario);  // Parsear el JSON a un objeto
+    username = usuarioObj.Username;  // Obtener el valor de Username
+  }
  
 
   useEffect(() => {
@@ -65,9 +73,9 @@ export function Navbar({ isCollapsed, toggleNavbar }: NavbarProps) {
       window.location.hash = '/';
     } else {
       consultaDatosUsuario(); // Combina las consultas en una sola función
-      fetchTicketData('/helpers/pendientes/tickets', user.Username, setPendingTickets);
-      fetchTicketData('/helpers/enproceso/tickets', user.Username, setInProgressTickets);
-
+      fetchTicketData('/helpers/pendientes/tickets', username, setPendingTickets);
+      fetchTicketData('/helpers/enproceso/tickets', username, setInProgressTickets);
+console.log(username)
     }
   }, [user]);
 
@@ -105,11 +113,11 @@ export function Navbar({ isCollapsed, toggleNavbar }: NavbarProps) {
 
 
   const consultaDatosUsuario = async () => {
-    if (!user || !user.Username) return;
+    if (!user || !username) return;
 
     try {
       // Consulta el nombre del usuario
-      const nombreResponse = await fetch(`${getIpApis()}/helpers/login/nombreusuarios?usuario=${user.Username}`, { method: 'GET' });
+      const nombreResponse = await fetch(`${getIpApis()}/helpers/login/nombreusuarios?usuario=${username}`, { method: 'GET' });
 
       if (!nombreResponse.ok) {
         throw new Error(`HTTP error! status: ${nombreResponse.status}`);
@@ -123,7 +131,7 @@ export function Navbar({ isCollapsed, toggleNavbar }: NavbarProps) {
       }
 
       // Consulta el rol del usuario
-      const rolResponse = await fetch(`${getIpApis()}/helpers/login/rolusuario?usuario=${user.Username}`, { method: 'GET' });
+      const rolResponse = await fetch(`${getIpApis()}/helpers/login/rolusuario?usuario=${username}`, { method: 'GET' });
 
       if (!rolResponse.ok) {
         throw new Error(`HTTP error! status: ${rolResponse.status}`);
@@ -167,7 +175,7 @@ export function Navbar({ isCollapsed, toggleNavbar }: NavbarProps) {
           <div className="flex flex-col items-center justify-center">
             {user && (
               <div className="text-sm text-white-on-dark">
-                <span className="block text-center break-words">{nombreUsuario || user.Username}</span>
+                <span className="block text-center break-words">{nombreUsuario || username}</span>
               </div>
             )}
           </div>

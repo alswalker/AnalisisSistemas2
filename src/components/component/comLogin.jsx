@@ -13,7 +13,7 @@ export default function Component() {
   const [showPassword, setShowPassword] = useState(false)
   const { login } = useAuth()
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
 
     if (!username || !password) {
