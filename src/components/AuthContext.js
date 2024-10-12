@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     // alert('Sesión expirada... Logout');
     navigate('/'); // Navega al login
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleSessionTimeout = () => {
