@@ -71,9 +71,8 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('currentPath'); // Limpia la ruta guardada
     setUser(null);
-    // alert('Sesión expirada... Logout');
     navigate('/'); // Navega al login
-    // window.location.reload();
+    window.location.reload();
   };
 
   const handleSessionTimeout = () => {
@@ -85,28 +84,24 @@ export const AuthProvider = ({ children }) => {
     if (timer) clearTimeout(timer);
     if (user) {
       const newTimer = setTimeout(handleSessionTimeout, 900000); //15 minutos
-      // const newTimer = setTimeout(handleSessionTimeout, 240000); // Tiempo de 4 minutos
-
       setTimer(newTimer);
     }
   };
 
   useEffect(() => {
-    if (user) {
+    if (typeof window !== 'undefined' && user) { // Verifica si está en el entorno del cliente
       resetTimer();
 
       window.addEventListener('mousemove', resetTimer);
       window.addEventListener('keydown', resetTimer);
-    } else {
-      clearTimeout(timer);
-      window.removeEventListener('mousemove', resetTimer);
-      window.removeEventListener('keydown', resetTimer);
     }
 
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('mousemove', resetTimer);
-      window.removeEventListener('keydown', resetTimer);
+      if (typeof window !== 'undefined') { // Verifica si está en el entorno del cliente
+        clearTimeout(timer);
+        window.removeEventListener('mousemove', resetTimer);
+        window.removeEventListener('keydown', resetTimer);
+      }
     };
   }, [user]);
 

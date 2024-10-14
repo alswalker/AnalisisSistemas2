@@ -8,6 +8,7 @@ import Papa from 'papaparse'; // Importa papaparse
 import { useAuth } from '@/components/AuthContext';
 import { ArrowDownTrayIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import {AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 
 
 export default function DetallePendientes() {
@@ -197,13 +198,15 @@ export default function DetallePendientes() {
     <>
       <Navbar isCollapsed={isNavbarVisible} toggleNavbar={toggleNavbar} />
       <button
-        onClick={toggleNavbar}
-        className={`fixed top-1 left-14 z-50 focus:outline-none 
-          ${isNavbarCollapsed ? 'text-white-on-dark' : 'text-white-on-dark'} 
-          mix-blend-difference`}
+          onClick={toggleNavbar}
+          className={`fixed top-1 left-15 z-50 focus:outline-none 
+            ${isNavbarCollapsed ? 'text-white-on-dark' : 'text-white-on-dark'} 
+            mix-blend-difference`}
+          aria-label={isNavbarCollapsed ? 'Mostrar Navbar' : 'Ocultar Navbar'}
+          title={isNavbarCollapsed ? 'Mostrar Navbar' : 'Ocultar Navbar'}
       >
-        {isNavbarCollapsed ? 'Mostrar Navbar' : 'Ocultar Navbar'}
-      </button>
+        <AdjustmentsHorizontalIcon className="w-8 h-8 mb-5 ml-5" />
+        </button>
       <div id="wrapper" className="flex flex-col min-h-screen">
         <div className={`flex-1 p-6 transition-transform duration-300 ${isNavbarVisible ? 'ml-64' : 'ml-0'}`}>
           <header className="flex flex-col justify-between mb-6">

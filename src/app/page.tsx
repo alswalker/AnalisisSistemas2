@@ -48,7 +48,7 @@ function App() {
             path="/prioridad"
             element={<ProtectedRoute component={Prioridad} />}
           />
-           <Route
+          <Route
             path="/rol"
             element={<ProtectedRoute component={Rol} />}
           />
@@ -56,11 +56,11 @@ function App() {
             path="/catconocimiento"
             element={<ProtectedRoute component={Conocimiento} />}
           />
-           <Route
+          <Route
             path="/especialidad"
             element={<ProtectedRoute component={Especialidad} />}
           />
-           <Route
+          <Route
             path="/detallependientes"
             element={<ProtectedRoute component={DetallePendientes} />}
           />
@@ -68,27 +68,26 @@ function App() {
             path="/detalleenproceso"
             element={<ProtectedRoute component={DetalleEnProceso} />}
           />
-           <Route
+          <Route
             path="/equipo"
             element={<ProtectedRoute component={Equipos} />}
           />
-           <Route
+          <Route
             path="/atencionticket"
             element={<ProtectedRoute component={AtencionTicket} />}
           />
-           <Route
+          <Route
             path="/conocimiento"
             element={<ProtectedRoute component={ConocimientoConsulta} />}
           />
-           <Route
+          <Route
             path="/usuario"
             element={<ProtectedRoute component={Usuarios} />}
           />
-           <Route
+          <Route
             path="/reporteria"
             element={<ProtectedRoute component={Reporteria} />}
           />
-  
         </Routes>
       </AuthProvider>
     </Router>
@@ -100,8 +99,10 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ component: Component }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && !isLoading) {
-      navigate("/");
+    if (typeof window !== 'undefined') { // Asegúrate de estar en el cliente
+      if (!user && !isLoading) {
+        navigate("/");
+      }
     }
   }, [user, isLoading, navigate]);
 

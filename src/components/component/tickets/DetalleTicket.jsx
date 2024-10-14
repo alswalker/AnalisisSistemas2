@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'; 
 import ModalEncuesta from '@/components/component/tickets/EncuestaTicket';
 import { useAuth } from '@/components/AuthContext';
+import {AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 
 
 export default function DetalleTicket({ ticketNumber }) {
