@@ -251,6 +251,10 @@ console.log(username)
                   <TableCellsIcon className="h-5 w-5" />
                   <span className="ml-3 text-white-on-dark">Equipo</span>
                 </Link>
+                <Link to="/departamento" className="flex items-center px-3 py-2 text-white-on-dark rounded-md hover:bg-gray-700">
+                  <TableCellsIcon className="h-5 w-5" />
+                  <span className="ml-3 text-white-on-dark">Deptos</span>
+                </Link>
                 <Link to="/rol" className="flex items-center px-3 py-2 text-white-on-dark rounded-md hover:bg-gray-700">
                   <TableCellsIcon className="h-5 w-5" />
                   <span className="ml-3 text-white-on-dark">Rol</span>
@@ -262,6 +266,10 @@ console.log(username)
                 <Link to="/prioridad" className="flex items-center px-3 py-2 text-white-on-dark rounded-md hover:bg-gray-700">
                   <TableCellsIcon className="h-5 w-5" />
                   <span className="ml-3 text-white-on-dark">Prioridad</span>
+                </Link>
+                <Link to="/tipoaccion" className="flex items-center px-3 py-2 text-white-on-dark rounded-md hover:bg-gray-700">
+                  <TableCellsIcon className="h-5 w-5" />
+                  <span className="ml-3 text-white-on-dark">Tipo Acción</span>
                 </Link>
                 <Link to="/catconocimiento" className="flex items-center px-3 py-2 text-white-on-dark rounded-md hover:bg-gray-700">
                   <TableCellsIcon className="h-5 w-5" />

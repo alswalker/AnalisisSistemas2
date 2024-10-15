@@ -17,6 +17,8 @@ import AtencionTicket from '@/components/component/tickets/AtencionTicket';
 import ConocimientoConsulta from '@/components/component/baseconocimiento/BaseConocimiento';
 import Usuarios from '@/components/component/catálogos/Usuarios';
 import Reporteria from '@/components/component/reporteria/Reporteria';
+import TipoAccion from '@/components/component/catálogos/comTipoAccion';
+import Departamentos from '@/components/component/catálogos/comDepartamento';
 
 // Define un tipo para los props del ProtectedRoute
 interface ProtectedRouteProps {
@@ -87,6 +89,14 @@ function App() {
           <Route
             path="/reporteria"
             element={<ProtectedRoute component={Reporteria} />}
+          />
+            <Route
+            path="/tipoaccion"
+            element={<ProtectedRoute component={TipoAccion} />}
+          />
+           <Route
+            path="/departamento"
+            element={<ProtectedRoute component={Departamentos} />}
           />
         </Routes>
       </AuthProvider>

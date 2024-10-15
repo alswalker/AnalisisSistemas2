@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthContext';
 import { getIpApis } from '@/components/component/configip';
-import { BellIcon, LayoutDashboardIcon } from '@/components/component/comIcons';
+import { BellAlertIcon, FolderOpenIcon} from '@heroicons/react/24/solid';
 
 const fetchTicketData = async (endpoint, username, setData) => {
   try {
@@ -51,7 +51,7 @@ const TicketCards = () => {
         >
           <div className="flex flex-col items-center">
             <div className="mb-4">
-              <BellIcon className="w-12 h-12" />
+              <BellAlertIcon className="w-12 h-12" />
             </div>
             <div className="text-lg">{ticket.descripcion}</div>
             <div className="text-4xl font-bold">{ticket.total}</div>
@@ -67,7 +67,7 @@ const TicketCards = () => {
         >
           <div className="flex flex-col items-center">
             <div className="mb-4">
-              <LayoutDashboardIcon className="w-12 h-12" />
+              <FolderOpenIcon className="w-12 h-12" />
             </div>
             <div className="text-lg">{ticket.descripcion}</div>
             <div className="text-4xl font-bold">{ticket.total}</div>
