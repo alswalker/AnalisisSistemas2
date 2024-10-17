@@ -20,6 +20,7 @@ export default function GenerarReporte() {
   const [filtros, setFiltros] = useState({});
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [combosData, setCombosData] = useState({});
 
   useEffect(() => {
     consultaReportes();
@@ -35,64 +36,187 @@ export default function GenerarReporte() {
     }
   };
 
+  // const handleReporteChange = (event) => {
+  //   const selectedId = event.target.value;
+  //   const selected = reportes.find(r => r.REP_ID === parseInt(selectedId));
+  //   setSelectedReporte(selected);
+
+  //   if (selectedId === "") {
+  //     setFiltros({});
+  //     setTableData([]); // Limpiar tabla si no hay reporte seleccionado
+  //   } else {
+  //     const initialFiltros = {};
+
+  //     if (selected.REP_FILTROS && selected.REP_FILTROS.trim() !== "") {
+  //       selected.REP_FILTROS.split(',').forEach(filtro => {
+  //         initialFiltros[filtro] = "";
+  //       });
+  //     }
+
+  //     setFiltros(initialFiltros);
+  //   }
+  // };
+
   const handleReporteChange = (event) => {
     const selectedId = event.target.value;
     const selected = reportes.find(r => r.REP_ID === parseInt(selectedId));
-    setSelectedReporte(selected);
-
+  
     if (selectedId === "") {
+      // Si no hay reporte seleccionado, limpiamos los filtros y la tabla
+      setSelectedReporte(null);
       setFiltros({});
-      setTableData([]); // Limpiar tabla si no hay reporte seleccionado
-    } else {
+      setTableData([]); // Limpiar tabla
+      return;
+    }
+  
+    setSelectedReporte(selected);
+  
+    if (selected) {
+      // Inicializamos los filtros según los campos
       const initialFiltros = {};
-
-      if (selected.REP_FILTROS && selected.REP_FILTROS.trim() !== "") {
-        selected.REP_FILTROS.split(',').forEach(filtro => {
-          initialFiltros[filtro] = "";
+      const initialCombosData = {};
+  
+      if (selected.REP_CAMPOS) {
+        selected.REP_CAMPOS.split(',').forEach(campo => {
+          initialFiltros[campo] = "";
+          if (campo.startsWith("spcombo")) {
+            fetchComboData(campo); // Cargar datos del combo
+          }
         });
       }
-
+      
       setFiltros(initialFiltros);
+      setCombosData(initialCombosData);
     }
   };
+  
+
+ const fetchComboData = async (campo) => {
+  try {
+    // Usar directamente el nombre completo del procedimiento almacenado
+    const spName = campo; // Aquí mandamos el campo completo, como 'spcombodepartamento'
+    // console.log(`Fetching data for ${spName}`);
+    
+    // Realizamos la llamada a la API pasando el nombre completo del SP
+    const response = await axios.post(`${getIpApis()}/helpers/combo/data`, { sp: spName });
+    // console.log("Response data:", response.data);
+    
+    // Guardamos los datos del combo
+    setCombosData(prevData => ({ ...prevData, [campo]: response.data }));
+  } catch (error) {
+    console.error(`Error fetching data for ${campo}:`, error);
+  }
+};
 
 
+
+  // const handleFiltroChange = (filtro, valor) => {
+  //   setFiltros(prev => ({ ...prev, [filtro]: valor }));
+  // };
   const handleFiltroChange = (filtro, valor) => {
-    setFiltros(prev => ({ ...prev, [filtro]: valor }));
+    setFiltros(prev => ({ ...prev, [filtro]: valor }));  // Actualiza el estado 'filtros' con el valor seleccionado
   };
 
-  const renderFiltros = () => {
-    if (!selectedReporte) return null;
+  // const renderFiltros = () => {
+  //   if (!selectedReporte) return null;
 
-    if (!selectedReporte.REP_FILTROS || selectedReporte.REP_FILTROS.trim() === "") {
-        return null; // No hacemos nada si no hay filtros
-    }
+  //   if (!selectedReporte.REP_FILTROS || selectedReporte.REP_FILTROS.trim() === "") {
+  //       return null; // No hacemos nada si no hay filtros
+  //   }
 
-    return selectedReporte.REP_FILTROS.split(',').map(filtro => {
-      if (filtro.includes("fecha")) {
+  //   return selectedReporte.REP_FILTROS.split(',').map(filtro => {
+  //     if (filtro.includes("fecha")) {
+  //       return (
+  //         <input
+  //           key={filtro}
+  //           type="date"
+  //           value={filtros[filtro] || ""}
+  //           onChange={(e) => handleFiltroChange(filtro, e.target.value)}
+  //           className="w-full p-2 border rounded-md mt-2 text-sm input_field"
+  //         />
+  //       );
+  //     } else {
+  //       return (
+  //         <input
+  //           key={filtro}
+  //           type="text"
+  //           placeholder={`Ingrese ${filtro}`}
+  //           value={filtros[filtro] || ""}
+  //           onChange={(e) => handleFiltroChange(filtro, e.target.value)}
+  //           className="w-full p-2 border rounded-md mt-2 text-sm input_field"
+  //         />
+  //       );
+  //     }
+  //   });
+  // };
+
+  const renderCampos = () => {
+    if (!selectedReporte || !selectedReporte.REP_CAMPOS) return null;
+  
+    return selectedReporte.REP_CAMPOS.split(',').map((campo, index) => {
+      const cleanCampo = campo.trim();  // Elimina espacios en blanco
+  
+      if (cleanCampo === "fechainicio" || cleanCampo === "fechafin") {
+        // Determinamos la etiqueta adecuada según el campo
+        const label = cleanCampo === "fechainicio" ? "Fecha Inicio" : "Fecha Fin";
+  
         return (
-          <input
-            key={filtro}
-            type="date"
-            value={filtros[filtro] || ""}
-            onChange={(e) => handleFiltroChange(filtro, e.target.value)}
+          <div key={`input_date_${index}`} className="mt-2">
+            <label class="block text-[#8B8E98] text-xs font-semibold mb-1">{label}</label>
+            <input
+              type="date"
+              value={filtros[cleanCampo] || ""}  // Asignar el valor actual de filtros
+              onChange={(e) => handleFiltroChange(cleanCampo, e.target.value)}  // Guardar el valor ingresado
+              className="w-full p-2 border rounded-md mt-1 text-sm input_field"
+            />
+          </div>
+        );
+      } else if (cleanCampo.includes("spcombo")) {
+        let labelPlaceholder = "Seleccione una opción";
+        if (cleanCampo.includes("departamento")) {
+          labelPlaceholder = "Seleccione departamento";
+        } else if (cleanCampo.includes("prioridad")) {
+          labelPlaceholder = "Seleccione prioridad";
+        } else if (cleanCampo.includes("tecnico")) {
+          labelPlaceholder = "Seleccione técnico";
+        }
+  
+        const comboOptions = combosData[cleanCampo]?.map((option) => ({
+          value: option.DATO,  // Utilizamos DATO como value
+          label: option.DATO,  // Mostramos DATO en el label visible
+        })) || [];
+  
+        return (
+          <select
+            key={`spcombo_${cleanCampo}_${index}`}  // Clave única usando el nombre del campo y el índice
+            value={filtros[cleanCampo] || ""}  // Asignar el valor actual de filtros
+            onChange={(e) => handleFiltroChange(cleanCampo, e.target.value)}  // Guardar el valor seleccionado
             className="w-full p-2 border rounded-md mt-2 text-sm input_field"
-          />
+          >
+            <option value="">{labelPlaceholder}</option>
+            {comboOptions.map((option, idx) => (
+              <option key={`${cleanCampo}_option_${idx}`} value={option.value}>{option.label}</option>
+            ))}
+          </select>
         );
       } else {
         return (
           <input
-            key={filtro}
+            key={`input_${cleanCampo}_${index}`}  // Clave única usando el nombre del campo y el índice
             type="text"
-            placeholder={`Ingrese ${filtro}`}
-            value={filtros[filtro] || ""}
-            onChange={(e) => handleFiltroChange(filtro, e.target.value)}
+            placeholder={`Ingrese ${cleanCampo}`}
+            value={filtros[cleanCampo] || ""}  // Asignar el valor actual de filtros
+            onChange={(e) => handleFiltroChange(cleanCampo, e.target.value)}  // Guardar el valor ingresado
             className="w-full p-2 border rounded-md mt-2 text-sm input_field"
           />
         );
       }
     });
   };
+  
+  
+  
+  
 
   const renderRequisito = () => {
     if (!selectedReporte || !selectedReporte.REP_REQUISITO) return null;
@@ -118,17 +242,40 @@ export default function GenerarReporte() {
       });
       return;
     }
-
+  
+    // Inicializar el payload para la API
+    const filtrosSQL = {};
+  
+    // Verificar si REP_CAMPOS y REP_FILTROS tienen valores válidos antes de hacer el split
+    const campos = selectedReporte.REP_CAMPOS ? selectedReporte.REP_CAMPOS.split(',') : [];
+    const variablesSQL = selectedReporte.REP_FILTROS ? selectedReporte.REP_FILTROS.split(',') : [];
+  
+    // Mapear los campos con las variables SQL, si existen
+    campos.forEach((campo, index) => {
+      const variableSQL = variablesSQL[index]?.trim();  // Mapeamos las variables SQL con los campos
+      const cleanCampo = campo.trim();  // Elimina espacios en blanco
+  
+      // Verificar si la variable tiene un valor seleccionado en los filtros
+      if (variableSQL && filtros[cleanCampo] !== undefined && filtros[cleanCampo] !== "") {
+        filtrosSQL[variableSQL] = filtros[cleanCampo];  // Asignamos el valor del campo al nombre de la variable SQL correspondiente
+      } else if (variableSQL) {
+        filtrosSQL[variableSQL] = "";  // Si no hay valor, enviar un valor vacío
+      }
+    });
+  
+    // Construir el payload final con el nombre del procedimiento y los filtros SQL correctos
     const payload = {
       procedure: selectedReporte.REP_SP,
-      filtros: filtros
+      filtros: filtrosSQL
     };
-
+  
+    console.log("Payload enviado:", payload);
+  
     axios.post(`${getIpApis()}/helpers/genera/reporte`, payload)
       .then(response => {
         const data = response.data;
         setTableData(data);
-
+  
         if (data.length > 0) {
           const generatedColumns = Object.keys(data[0]).map(key => ({
             name: key,
@@ -149,6 +296,10 @@ export default function GenerarReporte() {
         console.error("Error al generar reporte:", error);
       });
   };
+  
+  
+  
+  
 
   function obtenerFechaActual() {
         const ahora = new Date();
@@ -300,7 +451,9 @@ export default function GenerarReporte() {
             ))}
           </select>
           {renderRequisito()}
-          {renderFiltros()}
+          {/* {renderFiltros()} */}
+          {renderCampos()} {/* Renderizamos los campos dinámicamente */}
+
   
           <div className="mt-5 text-center">
             <button 

@@ -22,6 +22,7 @@ export default function DetalleTicket({ ticketNumber }) {
     if (ticketNumber) {
       setTicketData(null); // Limpia el estado antes de la nueva consulta
       consultaTickets(ticketNumber);
+      
     }
   }, [ticketNumber]);
 
@@ -31,6 +32,7 @@ export default function DetalleTicket({ ticketNumber }) {
         cache: 'no-cache' // Controla el caching del fetch
       });      const data = await response.json();
       setTicketData(data[0]); 
+      // 
     } catch (error) {
       console.error('Error fetching tickets:', error);
     }

@@ -75,7 +75,7 @@ export function Navbar({ isCollapsed, toggleNavbar }: NavbarProps) {
       consultaDatosUsuario(); // Combina las consultas en una sola función
       fetchTicketData('/helpers/pendientes/tickets', username, setPendingTickets);
       fetchTicketData('/helpers/enproceso/tickets', username, setInProgressTickets);
-console.log(username)
+// console.log(username)
     }
   }, [user]);
 
@@ -103,6 +103,7 @@ console.log(username)
     }
 
     navigate(`/atencionticket?ticket=${ticketNumber}`);
+    window.location.reload();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

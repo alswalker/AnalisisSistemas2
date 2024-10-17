@@ -30,6 +30,7 @@ export default function AntecedentesCliente({ ticketNumber }) {
   const handleTicketClick = (ticketNumber) => {
     // Redirigir a la página de atención del ticket
     navigate(`/atencionticket?ticket=${ticketNumber}`);
+    window.location.reload();
   };
 
   const filteredItems = antecedentes.filter(

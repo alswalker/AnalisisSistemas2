@@ -56,7 +56,6 @@ function Encuesta({ ticketNumber }) {
                 comentario: comentario,
             };
         
-            // console.log(ticketData)
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -119,7 +118,6 @@ function Encuesta({ ticketNumber }) {
                         <div className="flex text-black flex-col items-center">
                             <hr className="w-full border-black mb-4" />
                             <p className="text-sm text-gray-500 mb-6 text-center">Campos Obligatorios: (*)</p>
-                            <p className="text-sm text-gray-500 mb-6 text-center">Marque del 1 al 5 - siendo 1 lo más bajo y 5 lo más alto</p>
                             <form className="space-y-4 w-full" onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex flex-col">
@@ -133,9 +131,9 @@ function Encuesta({ ticketNumber }) {
                                             onFocus={() => handleFocus('atencion')}
                                         >
                                             <option value="">Selecciona una opción</option>
-                                            {[...Array(5).keys()].map(num => (
-                                                <option key={num + 1} value={num + 1}>{num + 1}</option>
-                                            ))}
+                                            <option value="Buena">Buena</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Mala">Mala</option>
                                         </select>
                                          {/* Tooltip flotante */}
                                          {showTooltips.atencion && (
@@ -155,9 +153,9 @@ function Encuesta({ ticketNumber }) {
                                             onFocus={() => handleFocus('tiempo')}
                                         >
                                             <option value="">Selecciona una opción</option>
-                                            {[...Array(5).keys()].map(num => (
-                                                <option key={num + 1} value={num + 1}>{num + 1}</option>
-                                            ))}
+                                            <option value="Buena">Buena</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Mala">Mala</option>
                                         </select>
                                         {/* Tooltip flotante */}
                                         {showTooltips.tiempo && (
@@ -177,9 +175,9 @@ function Encuesta({ ticketNumber }) {
                                             onFocus={() => handleFocus('solucion')}
                                         >
                                             <option value="">Selecciona una opción</option>
-                                            {[...Array(5).keys()].map(num => (
-                                                <option key={num + 1} value={num + 1}>{num + 1}</option>
-                                            ))}
+                                            <option value="Buena">Buena</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Mala">Mala</option>
                                         </select>
                                         {/* Tooltip flotante */}
                                         {showTooltips.solucion && (
@@ -206,7 +204,6 @@ function Encuesta({ ticketNumber }) {
                                         title="Cerrar Ticket"
                                     >
                                         <CheckIcon className="h-5 w-5" />
-                                        {/* Enviar */}
                                     </button>
                                     <button
                                         type="button"
@@ -215,7 +212,6 @@ function Encuesta({ ticketNumber }) {
                                         title="Cancelar"
                                     >
                                         <XCircleIcon className="h-5 w-5" />
-                                        {/* Cancelar */}
                                     </button>
                                 </div>
                             </form>

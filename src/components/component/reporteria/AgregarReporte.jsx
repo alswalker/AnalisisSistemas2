@@ -11,6 +11,7 @@ export default function AgregarReporte({ onReporteAgregado }) {
     REP_SP: '',
     REP_REQUISITO: '',
     REP_FILTROS: '',
+    REP_CAMPOS: '',
     REP_ESTATUS: ''
   });
 
@@ -54,6 +55,7 @@ export default function AgregarReporte({ onReporteAgregado }) {
             REP_SP: '',
             REP_REQUISITO: '',
             REP_FILTROS: '',
+            REP_CAMPOS: '',
             REP_ESTATUS: ''
           });
           window.location.reload(); // Recarga la página
@@ -131,6 +133,17 @@ export default function AgregarReporte({ onReporteAgregado }) {
           variant="outlined"
           size="medium" // Aumentar el tamaño del input
           value={newReportData.REP_FILTROS}
+          onChange={handleNewReportChange}
+          multiline // Cambiar a textarea
+          rows={4} // Número de filas en el textarea
+          sx={{ mb: 2, width: '100%' }}
+        />
+         <TextField
+          name="REP_CAMPOS"
+          label="Campos Necesarios"
+          variant="outlined"
+          size="medium" // Aumentar el tamaño del input
+          value={newReportData.REP_CAMPOS}
           onChange={handleNewReportChange}
           multiline // Cambiar a textarea
           rows={4} // Número de filas en el textarea

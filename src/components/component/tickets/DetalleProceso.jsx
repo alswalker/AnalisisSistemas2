@@ -60,6 +60,7 @@ export default function DetalleProceso() {
   const handleAtenderClick = (row) => {
     const ticketNumber = row.TICKET;
     navigate(`/atencionticket?ticket=${ticketNumber}`);
+    window.location.reload();
   };
 
   const columnsDetalleEnProceso = [

@@ -70,6 +70,7 @@ export default function Dashboard() {
 
     // Redirigir a la página de atención del ticket
     navigate(`/atencionticket?ticket=${ticketNumber}`);
+    window.location.reload();
   };
 
   const handleKeyPress = (e) => {

@@ -85,7 +85,7 @@ export default function Reporteria() {
         {activeComponent === 'new' && <Nuevo />}
 
       </div>
-
+ 
       
     </div>
   );

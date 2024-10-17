@@ -41,16 +41,17 @@ export default function AccionesTicket({ ticketNumber }) {
     //   width: '200px',
     //   wrap: true, // Ajuste automático del contenido
     // },
+    
     {
-      name: 'Técnico',
-      selector: row => row.TECNICO,
+      name: 'Fecha',
+      selector: row => row.FECHA,
       sortable: true,
       width: '150px',
       wrap: true, // Ajuste automático del contenido
     },
     {
-      name: 'Fecha',
-      selector: row => row.FECHA,
+      name: 'Técnico',
+      selector: row => row.TECNICO,
       sortable: true,
       width: '150px',
       wrap: true, // Ajuste automático del contenido

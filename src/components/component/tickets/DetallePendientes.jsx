@@ -25,6 +25,7 @@ export default function DetallePendientes() {
   useEffect(() => {
     // Guardar la ruta actual en sessionStorage
     sessionStorage.setItem('currentPath', '/detallependientes');
+   
   }, []);
 
   const consultaPendientes = async () => {
@@ -74,6 +75,7 @@ export default function DetallePendientes() {
       if (response.ok) {
         
         navigate(`/atencionticket?ticket=${ticketNumber}`);
+        window.location.reload();
       } else {
         const errorMessage = await response.text();
         Swal.fire({

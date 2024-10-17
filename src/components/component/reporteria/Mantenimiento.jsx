@@ -1,23 +1,15 @@
-"use client"; // Asegura que este componente sea un Client Component
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, IconButton, TextField, Button } from '@mui/material';
-import { DocumentCheckIcon, PencilIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import { Box, IconButton, Button } from '@mui/material';
+import { PencilIcon } from '@heroicons/react/24/solid';
 import Swal from 'sweetalert2';
 import { getIpApis } from '../configip';
-import AgregarReporte from './AgregarReporte'; // Importa el nuevo componente
+import EditarReporteModal from './EditarReporteModal'; // Importar el modal
 
 export default function Mantenimiento() {
   const [reportes, setReportes] = useState([]);
-  const [editRowId, setEditRowId] = useState(null);
-  const [editFormData, setEditFormData] = useState({
-    REP_ID: '',
-    REP_NOMBRE: '',
-    REP_SP: '',
-    REP_REQUISITO: '',
-    REP_FILTROS: '',
-    REP_ESTATUS: ''
-  });
+  const [reporteEditando, setReporteEditando] = useState(null); // Estado para manejar el reporte que estamos editando
+  const [openModal, setOpenModal] = useState(false); // Estado para controlar si el modal está abierto o no
 
   useEffect(() => {
     consultaReportes();
@@ -37,58 +29,18 @@ export default function Mantenimiento() {
   };
 
   const handleEditClick = (reporte) => {
-    setEditRowId(reporte.REP_ID);
-    setEditFormData({ ...reporte });
+    console.log("Reporte seleccionado para edición:", reporte); // Verificar que el reporte se seleccione correctamente
+    setReporteEditando(reporte); // Establecemos el reporte a editar
+    setOpenModal(true); // Abrimos el modal
   };
 
-  const handleEditFormChange = (event) => {
-    const { name, value } = event.target;
-    setEditFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleCloseModal = () => {
+    setOpenModal(false); // Cerramos el modal
+    setReporteEditando(null); // Limpiamos el reporte en edición
   };
 
-  const handleUpdateClick = async () => {
-    const { REP_ID, REP_NOMBRE, REP_SP, REP_REQUISITO, REP_FILTROS, REP_ESTATUS } = editFormData;
-    
-    if (!REP_NOMBRE || !REP_SP) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Campos obligatorios',
-        text: 'Por favor completa todos los campos obligatorios.',
-      });
-      return;
-    }
-
-    try {
-      const url = `${getIpApis()}/helpers/update/reportes`; // Cambia la URL según tu API
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editFormData)
-      });
-
-      if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Reporte actualizado correctamente!',
-        }).then(() => {
-          consultaReportes(); // Actualiza la lista de reportes después de la edición
-          setEditRowId(null); // Restablece el estado de edición
-        });
-      } else {
-        throw new Error('Error al actualizar el reporte');
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al actualizar el reporte',
-        text: error.message,
-      });
-    }
+  const handleSave = () => {
+    consultaReportes(); // Refrescamos los reportes al guardar cambios
   };
 
   const columnsReportes = [
@@ -98,16 +50,7 @@ export default function Mantenimiento() {
       width: 100,
       renderCell: (params) => {
         const row = params.row;
-        return editRowId === row.REP_ID ? (
-          <>
-            <IconButton onClick={handleUpdateClick} color="success">
-              <DocumentCheckIcon className="h-5 w-5" />
-            </IconButton>
-            <IconButton onClick={() => setEditRowId(null)} color="error">
-              <XCircleIcon className="h-5 w-5" />
-            </IconButton>
-          </>
-        ) : (
+        return (
           <IconButton onClick={() => handleEditClick(row)} color="primary">
             <PencilIcon className="h-5 w-5" />
           </IconButton>
@@ -115,92 +58,18 @@ export default function Mantenimiento() {
       }
     },
     { field: 'REP_ID', headerName: 'Id', width: 50 },
-    {
-      field: 'REP_NOMBRE',
-      headerName: 'Nombre',
-      width: 200,
-      editable: true,
-      renderCell: (params) => (
-        editRowId === params.row.REP_ID ? (
-          <TextField
-            value={editFormData.REP_NOMBRE}
-            name="REP_NOMBRE"
-            onChange={handleEditFormChange}
-            fullWidth
-          />
-        ) : params.row.REP_NOMBRE
-      )
-    },
-    {
-      field: 'REP_SP',
-      headerName: 'Procedimiento SQL',
-      width: 200,
-      editable: true,
-      renderCell: (params) => (
-        editRowId === params.row.REP_ID ? (
-          <TextField
-            value={editFormData.REP_SP}
-            name="REP_SP"
-            onChange={handleEditFormChange}
-            fullWidth
-          />
-        ) : params.row.REP_SP
-      )
-    },
-    {
-      field: 'REP_REQUISITO',
-      headerName: 'Filtros Requeridos',
-      width: 300,
-      editable: true,
-      renderCell: (params) => (
-        editRowId === params.row.REP_ID ? (
-          <TextField
-            value={editFormData.REP_REQUISITO}
-            name="REP_REQUISITO"
-            onChange={handleEditFormChange}
-            fullWidth
-          />
-        ) : params.row.REP_REQUISITO
-      )
-    },
-    {
-      field: 'REP_FILTROS',
-      headerName: 'Filtros',
-      width: 200,
-      editable: true,
-      renderCell: (params) => (
-        editRowId === params.row.REP_ID ? (
-          <TextField
-            value={editFormData.REP_FILTROS}
-            name="REP_FILTROS"
-            onChange={handleEditFormChange}
-            fullWidth
-          />
-        ) : params.row.REP_FILTROS
-      )
-    },
-    {
-        field: 'REP_ESTATUS',
-        headerName: 'Estatus',
-        width: 100,
-        editable: true,
-        renderCell: (params) => (
-          editRowId === params.row.REP_ID ? (
-            <TextField
-              value={editFormData.REP_ESTATUS}
-              name="REP_ESTATUS"
-              onChange={handleEditFormChange}
-              fullWidth
-            />
-          ) : params.row.REP_ESTATUS
-        )
-    },
+    { field: 'REP_NOMBRE', headerName: 'Nombre', width: 400 },
+    { field: 'REP_SP', headerName: 'Procedimiento SQL', width: 250 },
+    { field: 'REP_REQUISITO', headerName: 'Requisito', width: 300 },
+    { field: 'REP_FILTROS', headerName: 'Filtros SQL', width: 200 },
+    { field: 'REP_CAMPOS', headerName: 'Campos', width: 200 },
+    { field: 'REP_ESTATUS', headerName: 'Estatus', width: 100 },
   ];
 
   return (
     <div style={{ height: 500, width: '100%' }}>
       <Box sx={{ marginTop: 5, display: 'flex', gap: 1 }}>
-      <DataGrid
+        <DataGrid
           rows={reportes}
           columns={columnsReportes}
           getRowId={(row) => row.REP_ID}
@@ -209,6 +78,16 @@ export default function Mantenimiento() {
           disableSelectionOnClick
         />
       </Box>
+
+      {/* Modal para editar reportes */}
+      {reporteEditando && (
+        <EditarReporteModal
+          open={openModal}
+          onClose={handleCloseModal}
+          reporte={reporteEditando}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 }
